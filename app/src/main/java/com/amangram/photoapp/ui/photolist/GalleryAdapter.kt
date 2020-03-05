@@ -1,15 +1,19 @@
-package com.amangram.photoapp
+package com.amangram.photoapp.ui.photolist
 
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.View.OnClickListener
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import com.amangram.photoapp.R
+import com.amangram.photoapp.model.Photo
+import kotlinx.android.synthetic.main.gallery_item.view.*
 
-class GalleryAdapter(private val interaction: (String) -> Unit) :
-    ListAdapter<String, GalleryAdapter.GalleryVH>(StringDC()) {
+class GalleryAdapter(private val interaction: (Photo) -> Unit) :
+    ListAdapter<Photo, GalleryAdapter.GalleryVH>(
+        PhotoDC()
+    ) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GalleryVH {
         val inflater = LayoutInflater.from(parent.context)
@@ -20,21 +24,21 @@ class GalleryAdapter(private val interaction: (String) -> Unit) :
         holder.bind(getItem(position))
     }
 
-    fun swapData(data: List<String>) {
+    fun swapData(data: List<Photo>) {
         submitList(data.toMutableList())
     }
 
     inner class GalleryVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: String) {
-            // TODO: Bind the data with View
+        fun bind(item: Photo) {
+            itemView.photo_name.text = item.title
         }
     }
 
-    private class StringDC : DiffUtil.ItemCallback<String>() {
+    private class PhotoDC : DiffUtil.ItemCallback<Photo>() {
         override fun areItemsTheSame(
-            oldItem: String,
-            newItem: String
+            oldItem: Photo,
+            newItem: Photo
         ): Boolean {
             TODO(
                 "not implemented"
@@ -42,8 +46,8 @@ class GalleryAdapter(private val interaction: (String) -> Unit) :
         }
 
         override fun areContentsTheSame(
-            oldItem: String,
-            newItem: String
+            oldItem: Photo,
+            newItem: Photo
         ): Boolean {
             TODO(
                 "not implemented"
